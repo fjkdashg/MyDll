@@ -54,22 +54,30 @@ namespace DESLite
         //解密
         public static string DecryptDES(string decryptString)
         {
-            try
+            if (string.IsNullOrEmpty(decryptString))
             {
-                byte[] rgbKey = Encoding.UTF8.GetBytes(codeKey);
-                byte[] rgbIV = Keys;
-                byte[] inputByteArray = Convert.FromBase64String(decryptString);
-                DESCryptoServiceProvider DCSP = new DESCryptoServiceProvider();
-                MemoryStream mStream = new MemoryStream();
-                CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
-                cStream.Write(inputByteArray, 0, inputByteArray.Length);
-                cStream.FlushFinalBlock();
-                return Encoding.UTF8.GetString(mStream.ToArray());
+                return null;
             }
-            catch
+            else
             {
-                return "读取失败" + decryptString;
+                try
+                {
+                    byte[] rgbKey = Encoding.UTF8.GetBytes(codeKey);
+                    byte[] rgbIV = Keys;
+                    byte[] inputByteArray = Convert.FromBase64String(decryptString);
+                    DESCryptoServiceProvider DCSP = new DESCryptoServiceProvider();
+                    MemoryStream mStream = new MemoryStream();
+                    CryptoStream cStream = new CryptoStream(mStream, DCSP.CreateDecryptor(rgbKey, rgbIV), CryptoStreamMode.Write);
+                    cStream.Write(inputByteArray, 0, inputByteArray.Length);
+                    cStream.FlushFinalBlock();
+                    return Encoding.UTF8.GetString(mStream.ToArray());
+                }
+                catch
+                {
+                    return "读取失败" + decryptString;
+                }
             }
+            
         }
     }
 }
