@@ -13,7 +13,7 @@ namespace DESLite
         private static byte[] Keys = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
         private static string codeKey;
 
-        public string DESLite(Boolean isSec,string str, string secKey)
+        public string doDESLite(Boolean isSec,string str, string secKey)
         {
             codeKey = secKey; //8位密钥
             if (isSec)
