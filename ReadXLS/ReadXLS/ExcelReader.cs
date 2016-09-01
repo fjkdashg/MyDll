@@ -16,12 +16,16 @@ namespace ReadXLS
             string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;" + "Data Source=" + Path + ";" + "Extended Properties=Excel 8.0;";
             OleDbConnection conn = new OleDbConnection(strConn);
 
+            
+
+            //读取数据
+            conn.Open();
+
             //获取Excel Sheet表名称
             DataTable schemaTable = conn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
             string tableName = schemaTable.Rows[0][2].ToString().Trim();
 
-            //读取数据
-            conn.Open();
+
             string strExcel = "";
             OleDbDataAdapter myCommand = null;
             DataSet ds = null;
