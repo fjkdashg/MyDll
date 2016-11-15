@@ -13,6 +13,7 @@ namespace ReadDate
         //基本参数
         public static string MSSQLConnSTR = " ";
         public static SqlConnection MSSQLConn = null;
+        public static Boolean LoginState = true;
 
 
         //初始化远程数据链接
