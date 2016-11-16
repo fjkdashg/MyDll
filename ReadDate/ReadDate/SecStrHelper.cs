@@ -15,7 +15,7 @@ namespace ReadDate
 
         //isSec 算法方向，True加密，False解密
 
-        public string DESLite(Boolean isSec, string str)
+        public static string DESLite(Boolean isSec, string str)
         {
             if (isSec)
             {

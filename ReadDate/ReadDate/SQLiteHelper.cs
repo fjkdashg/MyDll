@@ -27,8 +27,6 @@ namespace ReadDate
             }
             catch (Exception ex)
             {
-                PublicData.demoMsg("本地数据库连接", ex.ToString());
-
                 SQLiteConn = new SQLiteConnection(SQLitePath);
                 SQLiteConn.Open();
                 SQLiteConn.ChangePassword("Hc@3232327");
@@ -50,17 +48,13 @@ namespace ReadDate
                 {
                     SQLiteComm.CommandText = "CREATE TABLE [Soft_User] ([UID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[UserName] VARCHAR(20)  UNIQUE NULL,[UserPWD] VARCHAR(100)  NULL)";
                     SQLiteComm.ExecuteNonQuery();
-                    string pwd = PublicData.DESSec.doDESLite(true, "admin", PublicData.SecKey);
+                    string pwd = SecStrHelper.DESLite(true, "admin");
                     SQLiteComm.CommandText = "insert into [Soft_User]([UserName],[UserPWD]) values('admin','" + pwd + "')";
                     SQLiteComm.ExecuteNonQuery();
-                    
-                    
                 }
                 catch (Exception ex)
                 {
-                    PublicData.LogMessage.EditLog("!!!!!本地数据库初始化失败");
-                    
-                   
+
                 }
             }
         }

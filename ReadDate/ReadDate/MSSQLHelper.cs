@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace ReadDate
         public static string MSSQLConnSTR = " ";
         public static SqlConnection MSSQLConn = null;
         public static Boolean LoginState = true;
+        
 
 
         //初始化远程数据链接
@@ -23,18 +25,13 @@ namespace ReadDate
             {
                 MSSQLConn = new SqlConnection(MSSQLConnSTR);
                 MSSQLConn.Open();
-                MessageBox.Show("远程数据库初始化完成", "远程数据库初始化完成 MSSQLDB", MessageBoxButtons.OK);
-                PublicData.LogMessage.EditLog("远程数据库初始化完成");
                 MSSQLConn.Close();
-                LoginMSSQLServerState = true;
+                LoginState = true;
             }
             catch (Exception ex)
             {
-                LoginMSSQLServerState = false;
-                MessageBox.Show(ex.ToString(), "远程数据库连接失败 MSSQLDB", MessageBoxButtons.OK);
-                PublicData.LogMessage.EditLog("远程数据库连接失败，" + MSSQLConnSTR + "|" + ex.ToString());
+                LoginState = false;
             }
-
         }
 
         //远程数据查询
@@ -53,7 +50,6 @@ namespace ReadDate
 
         public static int MSSQLDo(string sql)
         {
-
             return 0;
         }
     }
