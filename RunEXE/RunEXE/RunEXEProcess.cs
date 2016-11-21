@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RunEXE
 {
-    public class RunProcess
+    public class RunEXEProcess
     {
         public void SystemShutdown()
         {
