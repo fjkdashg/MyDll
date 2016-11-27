@@ -13,7 +13,8 @@ namespace ReadDate
         //选择读取Excel到DataTable
         public DataTable ReadExcelToDT(string Path, string DataList)
         {
-            string strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";" + "Extended Properties=Excel 12.0;HDR=YES;IMEX=2";
+            string strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;'";
+            //string strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filenameurl + ";Extended Properties='Excel 12.0;HDR=Yes;IMEX=1;'";
             OleDbConnection conn = new OleDbConnection(strConn);
 
             //读取数据
