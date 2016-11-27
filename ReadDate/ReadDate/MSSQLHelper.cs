@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace ReadDate
 {
-    class MSSQLHelper
+    public class MSSQLHelper
     {
         //远程MSSQLSERVER数据库
         //基本参数
-        public static string MSSQLConnSTR = " ";
-        public static SqlConnection MSSQLConn = null;
-        public static Boolean LoginState = true;
+        public  string MSSQLConnSTR = " ";
+        public  SqlConnection MSSQLConn = null;
+        public  Boolean LoginState = true;
         
 
 
         //初始化远程数据链接
-        public static void InitialMSSQLDB()
+        public void InitialMSSQLDB()
         {
             try
             {
@@ -35,7 +35,7 @@ namespace ReadDate
         }
 
         //远程数据查询
-        public static DataTable MSSQLSelectTB(string sql)
+        public  DataTable MSSQLSelectTB(string sql)
         {
             DataTable theselect = new DataTable();
             MSSQLConn.Open();
@@ -48,9 +48,15 @@ namespace ReadDate
             return theselect;
         }
 
-        public static int MSSQLDo(string sql)
+        public  int MSSQLDo(string sql)
         {
             return 0;
+        }
+
+        public void CloseConn()
+        {
+            MSSQLConn.Close();
+            MSSQLConn = null;
         }
     }
 }

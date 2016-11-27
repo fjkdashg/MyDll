@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ReadDate
 {
-    class SecStrHelper
+    public class SecStrHelper
     {
         private static byte[] Keys = { 0x12, 0x34, 0x56, 0x78, 0x90, 0xAB, 0xCD, 0xEF };
         private static string codeKey = "fjkdashg"; //8位密钥

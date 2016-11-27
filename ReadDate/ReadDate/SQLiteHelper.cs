@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ReadDate
 {
-    class SQLiteHelper
+    public class SQLiteHelper
     {
         //本地数据库
         //基本参数

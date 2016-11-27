@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReadDate
 {
-    class MySQLHelper
+    public class MySQLHelper
     {
     }
 }
