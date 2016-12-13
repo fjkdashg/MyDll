@@ -32,8 +32,7 @@ namespace RunLog
 
 
         public void  EditLog(string LogLine)
-        {
-            
+        {          
                 string ProPath = System.Environment.CurrentDirectory;
                 FileStream fs = new FileStream(@ProPath + "\\Log_" + DateTime.Now.ToLongDateString().ToString() + ".txt", FileMode.OpenOrCreate, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs);
@@ -42,8 +41,6 @@ namespace RunLog
                 sw.Flush();
                 sw.Close();
                 fs.Close();
-       
-
         }
     }
 }

@@ -48,7 +48,8 @@ namespace ReadDate
                 {
                     SQLiteComm.CommandText = "CREATE TABLE [Soft_User] ([UID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[UserName] VARCHAR(20)  UNIQUE NULL,[UserPWD] VARCHAR(100)  NULL)";
                     SQLiteComm.ExecuteNonQuery();
-                    string pwd = SecStrHelper.DESLite(true, "admin");
+                    SecStrHelper SSH = new SecStrHelper();
+                    string pwd = SSH.DESLite(true, "admin");
                     SQLiteComm.CommandText = "insert into [Soft_User]([UserName],[UserPWD]) values('admin','" + pwd + "')";
                     SQLiteComm.ExecuteNonQuery();
                 }
