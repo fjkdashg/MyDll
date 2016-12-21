@@ -12,13 +12,13 @@ namespace ReadDate
     {
         //本地数据库
         //基本参数
-        public static SQLiteConnection SQLiteConn = null;
-        public static SQLiteCommand SQLiteComm = null;
-        public static string SQLitePath = "Data Source=database.s3db";
-        public static string SQLitePWD = ";Password=Hc@3232327";
+        public  SQLiteConnection SQLiteConn = null;
+        public  SQLiteCommand SQLiteComm = null;
+        public  string SQLitePath = "Data Source=database.s3db";
+        public  string SQLitePWD = ";Password=Hc@3232327";
 
         //初始化本地数据库
-        public static void InitialSQLiteDB()
+        public  void InitialSQLiteDB()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace ReadDate
 
 
         //本地数据库查询
-        public static DataTable SQLiteDT(String SQL)
+        public  DataTable SQLiteDT(String SQL)
         {
             SQLiteDataAdapter SLDA = new SQLiteDataAdapter(SQL, SQLiteConn);
             DataSet ds = new DataSet();
@@ -71,6 +71,30 @@ namespace ReadDate
             SLDA = null;
             ds = null;
             return DT;
+        }
+
+        public  String SQLiteDO(String SQL)
+        {
+            SQLiteComm.CommandText = SQL;
+            string RT= SQLiteComm.ExecuteNonQuery().ToString();
+            return RT;
+        }
+
+        public int UserLoginCheck(string UserName, string UserPWD)
+        {
+            string sql1 = "SELECT [UID] FROM [Soft_User] WHERE [UserName] = '" + UserName + "' and UserPWD='"+ UserPWD + "' ";
+            SQLiteCommand cmd = SQLiteConn.CreateCommand();
+            cmd.CommandText = sql1;
+            SQLiteDataReader SelectUID = cmd.ExecuteReader();
+
+            if (SelectUID.Read())
+            {
+                return SelectUID.GetInt16(0);
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }
