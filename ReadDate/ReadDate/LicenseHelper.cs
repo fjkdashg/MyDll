@@ -11,13 +11,14 @@ namespace ReadDate
     {
         string AppMac = "";
         string AppID = "";
-        DateTime AppTime ;
+        DateTime AppTime;
         public Boolean AllowLogin = false;
+        
 
         public string AddLicense(string LicenseKeyStr)
         {
-            RegistryKey LMKey= Registry.LocalMachine;
-            RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("software\\HiSoft");
+            RegistryKey LMKey = Registry.LocalMachine;
+            RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("SOFTWARE\\HiSoft");
             RegistryKey LicenseKey = LMKey.OpenSubKey("SOFTWARE\\HiSoft", true);
             LicenseKey.SetValue("HiStr", LicenseKeyStr);
             return LicenseKey.GetValue("HiStr").ToString();
@@ -35,35 +36,31 @@ namespace ReadDate
             //解密许可信息
             SecStrHelper SSH = new SecStrHelper();
             string LicenseStr = SSH.DESLite(false, LicenseKeyStr);
-            List<string> LicenseInfo= new List<string>(LicenseStr.Split(','));
+            List<string> LicenseInfo = new List<string>(LicenseStr.Split(','));
             //提取许可信息
             AppID = LicenseInfo[2];
             AppTime = DateTime.Parse(LicenseInfo[1].ToString());
             AppMac = LicenseInfo[0];
             //提取硬件信息
             HardwareHelper HwH = new HardwareHelper();
-            string ThisMAC = HwH.GetMacAddress();
+            string ThisMAC = SSH.DESLite(true, HwH.GetMacAddress());
 
             //许可验证
             if (AppMac != ThisMAC)
             {
                 AllowLogin = false;
-                return "未注册 "+ ThisMAC;
+                return "False,未注册," + ThisMAC;
             }
             else if (AppTime < DateTime.Now)
             {
                 AllowLogin = false;
-                return "注册过期 "+ AppTime;
+                return "False,注册过期," + AppTime;
             }
             else
             {
                 AllowLogin = true;
-                return LicenseStr + " | " + AppTime;
+                return "True,验证成功," + AppID + "," + LicenseStr;
             }
-
-
-            
         }
-
     }
 }

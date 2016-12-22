@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppInfo.cs" />
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="HardwareHelper.cs" />
     <Compile Include="JSONHelper.cs" />

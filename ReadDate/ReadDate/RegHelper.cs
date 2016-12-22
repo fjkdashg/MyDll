@@ -9,18 +9,18 @@ namespace ReadDate
 {
     class RegHelper
     {
-        public string RegPath = "software\\HiSoft";
+        public string RegPath = "SOFTWARE\\HiSoft";
 
-        public string AddLicense(string RegKey, string LicenseKeyStr)
+        public string AddReg(string RegKey, string RegKeyStr)
         {
             RegistryKey LMKey = Registry.LocalMachine;
             RegistryKey LicenseKeyEdit = LMKey.CreateSubKey(RegPath);
             RegistryKey LicenseKey = LMKey.OpenSubKey(RegPath, true);
-            LicenseKey.SetValue(RegKey, LicenseKeyStr);
+            LicenseKey.SetValue(RegKey, RegKeyStr);
             return LicenseKey.GetValue(RegKey).ToString();
         }
 
-        public string ReadLicense(string RegKey)
+        public string ReadReg(string RegKey)
         {
             RegistryKey LMKey = Registry.LocalMachine;
             RegistryKey LicenseKeyEdit = LMKey.CreateSubKey(RegPath);

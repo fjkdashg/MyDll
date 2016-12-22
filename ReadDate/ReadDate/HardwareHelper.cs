@@ -23,6 +23,7 @@ namespace ReadDate
                     if ((bool)mo["IPEnabled"] == true)
                     {
                         mac = mo["MacAddress"].ToString();
+                        mac= mac.Replace(":", ""); 
                         break;
                     }
                 }
@@ -37,8 +38,6 @@ namespace ReadDate
             finally
             {
             }
-
         }
-
     }
 }

@@ -46,11 +46,11 @@ namespace ReadDate
                 //初始化系统表
                 try
                 {
-                    SQLiteComm.CommandText = "CREATE TABLE [Soft_User] ([UID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[UserName] VARCHAR(20)  UNIQUE NULL,[UserPWD] VARCHAR(100)  NULL)";
+                    SQLiteComm.CommandText = "CREATE TABLE [Soft_User] ([UID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,[UserName] VARCHAR(20)  UNIQUE NULL,[UserPWD] VARCHAR(100)  NULL,[UserAPP] VARCHAR(200)  NULL)";
                     SQLiteComm.ExecuteNonQuery();
                     SecStrHelper SSH = new SecStrHelper();
                     string pwd = SSH.DESLite(true, "admin");
-                    SQLiteComm.CommandText = "insert into [Soft_User]([UserName],[UserPWD]) values('admin','" + pwd + "')";
+                    SQLiteComm.CommandText = "insert into [Soft_User]([UserName],[UserPWD],[UserAPP]) values('admin','" + pwd + "','ALL')";
                     SQLiteComm.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -73,6 +73,7 @@ namespace ReadDate
             return DT;
         }
 
+        //本地数据库操作
         public  String SQLiteDO(String SQL)
         {
             SQLiteComm.CommandText = SQL;
@@ -80,20 +81,21 @@ namespace ReadDate
             return RT;
         }
 
-        public int UserLoginCheck(string UserName, string UserPWD)
+        //本地用户验证
+        public string UserLoginCheck(string UserName, string UserPWD)
         {
-            string sql1 = "SELECT [UID] FROM [Soft_User] WHERE [UserName] = '" + UserName + "' and UserPWD='"+ UserPWD + "' ";
+            string sql1 = "SELECT [UID],[UserAPP] FROM [Soft_User] WHERE [UserName] = '" + UserName + "' and UserPWD='"+ UserPWD + "' ";
             SQLiteCommand cmd = SQLiteConn.CreateCommand();
             cmd.CommandText = sql1;
             SQLiteDataReader SelectUID = cmd.ExecuteReader();
 
             if (SelectUID.Read())
             {
-                return SelectUID.GetInt16(0);
+                return SelectUID.GetInt16(0).ToString()+","+ SelectUID.GetString(1);
             }
             else
             {
-                return -1;
+                return "-1,用户名或者密码错误";
             }
         }
     }
