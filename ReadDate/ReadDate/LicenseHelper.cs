@@ -45,15 +45,15 @@ namespace ReadDate
             string ThisMAC = HwH.GetMacAddress();
 
             //许可验证
-            if (AppMac == ThisMAC)
+            if (AppMac != ThisMAC)
             {
-                AllowLogin = true;
-                return "未注册";
+                AllowLogin = false;
+                return "未注册 "+ ThisMAC;
             }
             else if (AppTime < DateTime.Now)
             {
-                AllowLogin = true;
-                return "注册过期";
+                AllowLogin = false;
+                return "注册过期 "+ AppTime;
             }
             else
             {
