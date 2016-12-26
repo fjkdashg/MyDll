@@ -10,27 +10,84 @@ namespace ReadDate
 {
     public class ExcelHelper
     {
-        //选择读取Excel到DataTable
-        public DataTable ReadExcelToDT(string Path, string DataList)
+        public string Path = "";
+        public OleDbConnection conn = new OleDbConnection();
+        public string DefaultTBName = "";
+
+        public void InitialExcelHelper()
         {
-            string strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";Extended Properties='Excel 12.0;HDR=YES;IMEX=1;'";
-            //string strConn = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + filenameurl + ";Extended Properties='Excel 12.0;HDR=Yes;IMEX=1;'";
-            OleDbConnection conn = new OleDbConnection(strConn);
+            try
+            {
+                string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";Extended Properties='Excel 12.0;HDR=YES;'";
+                conn = new OleDbConnection(connStr);
+                conn.Open();
+                DefaultTBName= ExcelSchemaInfo().Rows[0][2].ToString().Trim();
+            }
+            catch
+            {
 
-            //读取数据
-            conn.Open();
+            }
+        }
 
+        //获取Excel表信息
+        public DataTable ExcelSchemaInfo()
+        {
+            return conn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
+        }
+
+        //选择读取Excel到DataTable
+        public DataTable ReadExcelToDT(string DataList,string ExcelTBName)
+        {
             //获取Excel Sheet表名称
-            DataTable schemaTable = conn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, null);
-            string tableName = schemaTable.Rows[0][2].ToString().Trim();
+            if (String.IsNullOrEmpty(ExcelTBName))
+            {
+                ExcelTBName = DefaultTBName;
+            }
 
             OleDbDataAdapter myCommand = null;
             DataSet ds = null;
-            string strExcel = "select " + DataList + " from [" + tableName + "]";
-            myCommand = new OleDbDataAdapter(strExcel, strConn);
+            string ExcelSQL = "select " + DataList + " from [" + ExcelTBName + "]";
+            myCommand = new OleDbDataAdapter(ExcelSQL, conn);
             ds = new DataSet();
             myCommand.Fill(ds, "table1");
             return ds.Tables[0];
+        }
+
+
+        //将表格数据写入Excel
+        public string DTImportToExcel(DataTable TarDT,string ExcelTable, string[] TarExcelColName, string[] SkepColumns)
+        {
+            //获取Excel表名称
+            if (String.IsNullOrEmpty(ExcelTable))
+            {
+                ExcelTable = DefaultTBName;
+            }
+            
+            foreach (DataRow DTRow in TarDT.Rows)
+            {
+                string Title="";
+                string Values="";
+                for (int i = 0; i < TarDT.Columns.Count; i++)
+                {
+                    if (!(Array.IndexOf(SkepColumns, TarDT.Columns[i].ColumnName) > -1))
+                    {
+                        Title += TarDT.Columns[i].ColumnName;
+                        Values += "'" + DTRow[i].ToString() + "'";
+                        if (i != (TarDT.Columns.Count - 1))
+                        {
+                                Title += ",";
+                                Values += ",";
+                        }
+                    }
+                }
+
+                OleDbCommand ODCExcel = conn.CreateCommand();
+                ODCExcel.CommandText = "insert into ["+ ExcelTable+"] ("+ Title + ")values("+ Values+")";
+                Console.WriteLine("OK - "+ DTRow["科目编码"].ToString()+"  " + DTRow["科目名称"].ToString());
+                ODCExcel.ExecuteNonQuery();
+                ODCExcel.Dispose();
+            }
+            return "OK,"+ Path+","+ ExcelTable;
         }
     }
 }

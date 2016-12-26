@@ -40,6 +40,17 @@ namespace ReadDate
             newrow["UpDataURL"] = "http://s4.hzcrj.com/API/AppInfo.php?AppID=CallListUpdateTool";
 
             AppList.Rows.Add(newrow);
+            
+            //添加数据行3
+            newrow = AppList.NewRow();
+            newrow["id"] = 3;
+            newrow["AppID"] = "GlImportTool";
+            newrow["AppName"] = "总账导入工具";
+            newrow["AppPath"] = "GlImportTool.exe";
+            newrow["UpDataURL"] = "http://s4.hzcrj.com/API/AppInfo.php?AppID=GlImportTool";
+
+            AppList.Rows.Add(newrow);
+
 
 
             return AppList;
