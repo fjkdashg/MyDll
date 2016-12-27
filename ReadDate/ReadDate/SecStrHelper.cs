@@ -34,7 +34,7 @@ namespace ReadDate
                 }
                 catch
                 {
-                    return "保存错误" + str;
+                    return "保存错误," + str;
                 }
             }
             else
@@ -60,7 +60,7 @@ namespace ReadDate
                     }
                     catch
                     {
-                        return "读取失败" + str;
+                        return "读取失败," + str;
                     }
                 }
             }

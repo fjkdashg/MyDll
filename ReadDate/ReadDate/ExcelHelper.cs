@@ -45,12 +45,11 @@ namespace ReadDate
             }
 
             OleDbDataAdapter myCommand = null;
-            DataSet ds = null;
+            DataTable dt = null;
             string ExcelSQL = "select " + DataList + " from [" + ExcelTBName + "]";
             myCommand = new OleDbDataAdapter(ExcelSQL, conn);
-            ds = new DataSet();
-            myCommand.Fill(ds, "table1");
-            return ds.Tables[0];
+            myCommand.Fill(dt);
+            return dt;
         }
 
 

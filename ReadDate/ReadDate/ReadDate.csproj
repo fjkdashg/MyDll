@@ -79,6 +79,7 @@
     <Compile Include="LicenseHelper.cs" />
     <Compile Include="MSSQLHelper.cs" />
     <Compile Include="MySQLHelper.cs" />
+    <Compile Include="OleDBHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegHelper.cs" />
     <Compile Include="SecStrHelper.cs" />

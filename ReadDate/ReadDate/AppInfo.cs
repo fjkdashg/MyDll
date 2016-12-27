@@ -51,10 +51,13 @@ namespace ReadDate
 
             AppList.Rows.Add(newrow);
 
-
-
             return AppList;
         }
-        
+
+        public string GetAppInfo(string SName,string SValue,string TName)
+        {
+            DataRow[] SelectRow= AppListInitial().Select(SName + " = '" + SValue + " '");
+            return SelectRow[0][TName].ToString();
+        }
     }
 }
