@@ -10,34 +10,47 @@ namespace ReadDate
 {
     public class OleDBHelper
     {
-        public string Path;
+        public string dbPath="";
         public string UserName;
         public string PWD;
+        public string[] MSG=new string[5];
 
-        public OleDbConnection conn;   //数据库连接
-        public Boolean connState = false;
+        public OleDbConnection conn=new OleDbConnection();   //数据库连接        
 
-        public string[] InitialConn(string DBType)
+        public void FormatPath()
         {
+            //dbPath = Path.GetFullPath(dbPath);
+            //connString= "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='" + dbPath + "';";
+        }
+
+        public void InitialConn(string DBType)
+        {
+            //FormatPath();
             switch (DBType)
             {
                 case "Access":
                     try
                     {
-                        string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Path + ";";
+                        Console.WriteLine(@dbPath);
+                        string connStr = "";
                         if (!String.IsNullOrEmpty(PWD))
                         {
-                            connStr+="jet oledb: Database Password = " + PWD + "; ";
+                            connStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + dbPath + ";jet oledb:Database Password="+ PWD + ";";//
                         }
+                        else
+                        {
+                            connStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + dbPath + ";";
+                        }
+                        Console.WriteLine(connStr);
                         conn = new OleDbConnection(connStr);
                         conn.Open();
-                        connState = true;
-                        return new string[] { "true", Path };
+                        //return new string[] { "true", dbPath };
                         break;
                     }
                     catch(Exception ex)
                     {
-                        return new string[] { "false", Path , ex.Message };
+                        //return new string[] { "false", "Access "+ dbPath, "Access Conn Initial \n" + ex.Message };
+                        MSG = new string[] { "false", "Access " + dbPath, "Access Conn Initial \n" + ex.Message };
                         break;
                     }
                     break;
@@ -45,37 +58,40 @@ namespace ReadDate
                 case "Excel":
                     try
                     {
-                        string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";Extended Properties='Excel 12.0;HDR=YES;'";
+                        string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + dbPath + ";Extended Properties='Excel 12.0;HDR=YES;'";
                         conn = new OleDbConnection(connStr);
                         conn.Open();
-                        connState = true;
-                        return new string[] { "true", Path };
+                        
+                        //return new string[] { "true", dbPath };
                         break;
                     }
                     catch (Exception ex)
                     {
-                        return new string[] { "false", Path, ex.Message };
+                        //return new string[] { "false", dbPath, ex.Message };
+                        MSG = new string[] { "false", dbPath, ex.Message };
                         break;
                     }
                     break;
                 case "ExcelNoHDR":
                     try
                     {
-                        string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + Path + ";Extended Properties='Excel 12.0;HDR=NO;'";
+                        string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + dbPath + ";Extended Properties='Excel 12.0;HDR=NO;'";
                         conn = new OleDbConnection(connStr);
                         conn.Open();
-                        connState = true;
-                        return new string[] { "true", Path };
+                        
+                        //return new string[] { "true", dbPath };
                         break;
                     }
                     catch (Exception ex)
                     {
-                        return new string[] { "false", Path, ex.Message };
+                        //return new string[] { "false", dbPath, ex.Message };
+                        MSG = new string[] { "false", dbPath, ex.Message };
                         break;
                     }
                     break;
                 default:
-                    return new string[] { "false", Path , "未找到匹配的数据库类型" };
+                    //return new string[] { "false", dbPath, "未找到匹配的数据库类型" };
+                    MSG = new string[] { "false", dbPath, "未找到匹配的数据库类型" };
                     break;
             }
         }
@@ -84,13 +100,26 @@ namespace ReadDate
         //读取数据库
         public DataTable ReadDT(string SQL)
         {
-            DataTable DT=null;
+            DataTable DT=new DataTable();
             OleDbDataAdapter ODDA = new OleDbDataAdapter(SQL, conn);
             ODDA.Fill(DT);
             return DT;
         }
 
-
+        //读取单个值
+        public object ReadSingleValue(string sql)
+        {
+            OleDbCommand ODC = new OleDbCommand(sql, conn);
+            OleDbDataReader ODDR = ODC.ExecuteReader();
+            if (ODDR.Read())
+            {
+                return ODDR[0];
+            }
+            else
+            {
+                return "Error";
+            }
+        }
 
         //数据库操作
         public string[] WriteDT(string sql)
