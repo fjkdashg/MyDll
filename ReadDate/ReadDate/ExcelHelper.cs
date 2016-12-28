@@ -66,23 +66,26 @@ namespace ReadDate
             {
                 string Title="";
                 string Values="";
+                Boolean k = false;
                 for (int i = 0; i < TarDT.Columns.Count; i++)
                 {
                     if (!(Array.IndexOf(SkepColumns, TarDT.Columns[i].ColumnName) > -1))
                     {
+                        if (k)
+                        {
+                            Title += ",";
+                            Values += ",";
+                        }
+                        k = true;
                         Title += TarDT.Columns[i].ColumnName;
                         Values += "'" + DTRow[i].ToString() + "'";
-                        if (i != (TarDT.Columns.Count - 1))
-                        {
-                                Title += ",";
-                                Values += ",";
-                        }
                     }
                 }
 
                 OleDbCommand ODCExcel = conn.CreateCommand();
                 ODCExcel.CommandText = "insert into ["+ ExcelTable+"] ("+ Title + ")values("+ Values+")";
-                Console.WriteLine("OK - "+ DTRow["科目编码"].ToString()+"  " + DTRow["科目名称"].ToString());
+                //Console.WriteLine(ODCExcel.CommandText);
+                //Console.WriteLine("OK - "+ DTRow["科目编码"].ToString()+"  " + DTRow["科目名称"].ToString());
                 ODCExcel.ExecuteNonQuery();
                 ODCExcel.Dispose();
             }
