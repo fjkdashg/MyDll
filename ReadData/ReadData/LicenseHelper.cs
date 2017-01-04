@@ -11,7 +11,7 @@ namespace ReadData
     {
         string AppMac = "";
         string AppID = "";
-        DateTime AppTime;
+        DateTime AppTime= DateTime.Parse("0000-00-00 00:00:00");
         public Boolean AllowLogin = false;
         
 
@@ -28,19 +28,33 @@ namespace ReadData
 
         public string ReadLicense()
         {
-            //读取本地许可信息
-            RegistryKey LMKey = Registry.LocalMachine;
-            RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("software\\HiSoft");
-            RegistryKey LicenseKey = LMKey.OpenSubKey("SOFTWARE\\HiSoft", true);
-            string LicenseKeyStr = LicenseKey.GetValue("HiStr").ToString();
-            //解密许可信息
             SecStrHelper SSH = new SecStrHelper();
-            string LicenseStr = SSH.DESLite(false, LicenseKeyStr);
-            List<string> LicenseInfo = new List<string>(LicenseStr.Split(','));
-            //提取许可信息
-            AppID = LicenseInfo[2];
-            AppTime = DateTime.Parse(LicenseInfo[1].ToString());
-            AppMac = LicenseInfo[0];
+
+            string LicenseKeyStr="";
+            string LicenseStr="";
+
+            try
+            {
+                //读取本地许可信息
+                RegistryKey LMKey = Registry.LocalMachine;
+                RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("software\\HiSoft");
+                RegistryKey LicenseKey = LMKey.OpenSubKey("SOFTWARE\\HiSoft", true);
+                LicenseKeyStr = LicenseKey.GetValue("HiStr").ToString();
+                
+                //解密许可信息
+                LicenseStr = SSH.DESLite(false, LicenseKeyStr);
+                List<string> LicenseInfo = new List<string>(LicenseStr.Split(','));
+                //提取许可信息
+                AppID = LicenseInfo[2];
+                AppTime = DateTime.Parse(LicenseInfo[1].ToString());
+                AppMac = LicenseInfo[0];
+            }
+            catch(Exception ex)
+            {
+                //
+            }
+
+            
             //提取硬件信息
             HardwareHelper HwH = new HardwareHelper();
             string ThisMAC = SSH.DESLite(true, HwH.GetMacAddress());
@@ -59,7 +73,7 @@ namespace ReadData
             else
             {
                 AllowLogin = true;
-                return "True,验证成功," + AppID + "," + LicenseStr;
+                return "True,验证成功," + AppID;
             }
         }
     }

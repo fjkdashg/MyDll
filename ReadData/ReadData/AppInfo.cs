@@ -51,6 +51,16 @@ namespace ReadData
 
             AppList.Rows.Add(newrow);
 
+            //添加数据行4
+            newrow = AppList.NewRow();
+            newrow["id"] = 4;
+            newrow["AppID"] = "TPlusWeigh";
+            newrow["AppName"] = "T+过磅计量";
+            newrow["AppPath"] = "TPlusWeigh.exe";
+            newrow["UpDataURL"] = "http://s4.hzcrj.com/API/AppInfo.php?AppID=GlImportTool";
+
+            AppList.Rows.Add(newrow);
+
             return AppList;
         }
 
