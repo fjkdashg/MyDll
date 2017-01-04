@@ -44,10 +44,10 @@ namespace ReadData
                 ExcelTBName = DefaultTBName;
             }
 
-            OleDbDataAdapter myCommand = null;
-            DataTable dt = null;
+            //OleDbDataAdapter myCommand = null;
+            DataTable dt = new DataTable();
             string ExcelSQL = "select " + DataList + " from [" + ExcelTBName + "]";
-            myCommand = new OleDbDataAdapter(ExcelSQL, conn);
+            OleDbDataAdapter myCommand = new OleDbDataAdapter(ExcelSQL, conn);
             myCommand.Fill(dt);
             return dt;
         }
