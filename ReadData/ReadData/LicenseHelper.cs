@@ -11,14 +11,14 @@ namespace ReadData
     {
         string AppMac = "";
         string AppID = "";
-        DateTime AppTime= DateTime.Parse("0000-00-00 00:00:00");
+        DateTime AppTime= DateTime.Parse("1900-01-01");
         public Boolean AllowLogin = false;
         
 
         public string AddLicense(string LicenseKeyStr)
         {
             RegistryKey LMKey = Registry.LocalMachine;
-            RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("SOFTWARE\\HiSoft");
+            RegistryKey LicenseKeyEdit = LMKey.CreateSubKey("software\\HiSoft");
             RegistryKey LicenseKey = LMKey.OpenSubKey("SOFTWARE\\HiSoft", true);
             LicenseKey.SetValue("HiStr", LicenseKeyStr);
             return LicenseKey.GetValue("HiStr").ToString();
