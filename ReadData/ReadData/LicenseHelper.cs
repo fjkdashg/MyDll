@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReadDate
+namespace ReadData
 {
     public class LicenseHelper
     {

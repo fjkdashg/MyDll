@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Management;
 
-namespace ReadDate
+namespace ReadData
 {
     public class HardwareHelper
     {
