@@ -75,6 +75,7 @@
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="HardwareHelper.cs" />
+    <Compile Include="HttpWebHelper.cs" />
     <Compile Include="JSONHelper.cs" />
     <Compile Include="LicenseHelper.cs" />
     <Compile Include="LinqHelper.cs" />

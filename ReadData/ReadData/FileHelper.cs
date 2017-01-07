@@ -10,6 +10,7 @@ namespace ReadData
 {
     public  class FileHelper
     {
+        public int processPer = 0;
         //输出内嵌资源文件
         public string SaveResourceFile(string FileSavePath, Stream SouFS)
         {
@@ -36,6 +37,13 @@ namespace ReadData
             FS.Close();
             SouFS.Close();
             return "OK,"+ @FileSavePath;
+        }
+
+        //输出网络文件
+        public string SaveHttpFile(string URL,string SavePath)
+        {
+
+            return "SaveFullPath";
         }
     }
 }
