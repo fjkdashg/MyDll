@@ -9,7 +9,8 @@ namespace ReadData
 {
     public class AppInfo
     {
-        
+        public string UpdateURL = @"http://server.hzcrj.com/API/AppCheck.php";
+
         public DataTable AppListInitial()
         {
             //表结构

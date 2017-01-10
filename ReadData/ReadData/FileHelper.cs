@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -10,12 +11,8 @@ using System.Threading.Tasks;
 
 namespace ReadData
 {
-    public  class FileHelper
+    public class FileHelper
     {
-        public BackgroundWorker SaveHttpFileWork = new BackgroundWorker();
-
-
-        public int processPer = 0;
         //输出内嵌资源文件
         public string SaveResourceFile(string FileSavePath, Stream SouFS)
         {
@@ -43,7 +40,7 @@ namespace ReadData
                 bArr = BR.ReadBytes(bArr.Length);
             }
             SouFS.Close();
-            
+
             BR.Close();
             BW.Close();
             FS.Close();
@@ -51,21 +48,24 @@ namespace ReadData
             return @FileSavePath;
         }
 
-        //输出网络文件
-        public void SaveHttpFileWork_Initial()
+        //输出网络文件       
+        public BackgroundWorker SaveHttpFileWork_Initial()
         {
+            BackgroundWorker SaveHttpFileWork = new BackgroundWorker();
             SaveHttpFileWork.WorkerReportsProgress = true;  //允许报告进度
             SaveHttpFileWork.WorkerSupportsCancellation = true;
             SaveHttpFileWork.DoWork += new DoWorkEventHandler(SaveHttpFileWork_DoWork);  //产生新的线程来处理任务
             //SaveHttpFileWork.ProgressChanged += new ProgressChangedEventHandler(BGWDownloading_ProgressChanged);  //当调用ReportProgress会触发该事件
             //SaveHttpFileWork.RunWorkerCompleted += new RunWorkerCompletedEventHandler(BGWDownloading_RunWorkerCompleted);
+            return SaveHttpFileWork;
         }
-
         public void SaveHttpFileWork_DoWork(object sender, DoWorkEventArgs e)
         {
+            BackgroundWorker SaveHttpFileWork = sender as BackgroundWorker;
             string[] AppInfo = e.Argument as string[];
             string FileURL = AppInfo[0];
-            string FilePath =AppInfo[1];
+            string FilePath = AppInfo[1];
+            Console.WriteLine(FileURL + " | " + FilePath);
 
             if (!Directory.Exists(Path.GetDirectoryName(FilePath)))
             {
@@ -94,6 +94,42 @@ namespace ReadData
             stream.Close();
             responseStream.Close();
             e.Result = FilePath;
+        }
+
+        //ZIP解压缩
+        public string UnZipped(string ZipPath, string ExtPath)
+        {
+            using (FileStream zipFileToOpen = new FileStream(ZipPath, FileMode.Open))
+            using (ZipArchive archive = new ZipArchive(zipFileToOpen, ZipArchiveMode.Read))
+            {
+                //获取更新包内文件
+                foreach (ZipArchiveEntry zipArchiveEntry in archive.Entries)
+                {
+                    //设置解压路径
+                    string zipOutPath = ExtPath + @"\" + zipArchiveEntry.FullName;
+                    //判断路径是否合法
+                    if (!String.IsNullOrEmpty(Path.GetFileName(zipOutPath)))
+                    {
+                        //判断解压路径是否存在
+                        if (!Directory.Exists(Path.GetDirectoryName(zipOutPath)))
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(zipOutPath));
+                        }
+                        //解压文件
+                        using (System.IO.Stream stream = zipArchiveEntry.Open())
+                        {
+                            System.IO.Stream output = new FileStream(@zipOutPath, FileMode.Create);
+                            int b = -1;
+                            while ((b = stream.ReadByte()) != -1)
+                            {
+                                output.WriteByte((byte)b);
+                            }
+                            output.Close();
+                        }
+                    }
+                }
+            }
+            return ExtPath;
         }
     }
 }
