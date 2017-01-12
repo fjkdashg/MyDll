@@ -66,5 +66,14 @@ namespace ReadData
             DataRow[] SelectRow= AppListInitial().Select(SName + " = '" + SValue + " '");
             return SelectRow[0][TName].ToString();
         }
+
+        public string[] GetWebAppInfo(string AppID)
+        {
+            HttpWebHelper HWH = new HttpWebHelper();
+            IDictionary<string, string> parameters ;
+            //parameters.Add("AppID", AppID);
+            // string AppStr = HWH.HttpGetWeb(UpdateURL, parameters);
+            return new string[] { "1", "2" };
+        }
     }
 }

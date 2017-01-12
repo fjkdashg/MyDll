@@ -60,9 +60,8 @@ namespace ReadData
             }
         }
 
-
         //本地数据库查询
-        public  DataTable SQLiteDT(String SQL)
+        public  DataTable SQLiteDT(string SQL)
         {
             SQLiteDataAdapter SLDA = new SQLiteDataAdapter(SQL, SQLiteConn);
             DataSet ds = new DataSet();
@@ -74,7 +73,7 @@ namespace ReadData
         }
 
         //本地数据库操作
-        public  String SQLiteDO(String SQL)
+        public  string SQLiteDO(string SQL)
         {
             SQLiteComm.CommandText = SQL;
             string RT= SQLiteComm.ExecuteNonQuery().ToString();
