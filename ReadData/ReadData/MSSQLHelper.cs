@@ -14,7 +14,6 @@ namespace ReadData
         //基本参数
         public  string MSSQLConnSTR = " ";
         public  SqlConnection MSSQLConn = null;
-        public  Boolean LoginState = true;
         
 
 
@@ -25,38 +24,57 @@ namespace ReadData
             {
                 MSSQLConn = new SqlConnection(MSSQLConnSTR);
                 MSSQLConn.Open();
-                MSSQLConn.Close();
-                LoginState = true;
             }
             catch (Exception ex)
             {
-                LoginState = false;
             }
         }
 
         //远程数据查询
-        public  DataTable MSSQLSelectTB(string sql)
+        public  DataTable SelectDT(string sql)
         {
             DataTable theselect = new DataTable();
-            MSSQLConn.Open();
+            
             SqlCommand Comm = new SqlCommand(sql, MSSQLConn);
             Comm.CommandTimeout = 20;
             SqlDataAdapter sda = new SqlDataAdapter();
             sda.SelectCommand = Comm;
             sda.Fill(theselect);
-            MSSQLConn.Close();
+            
             return theselect;
         }
 
-        public  int MSSQLDo(string sql)
+
+        public object ReadSigleValue(string sql)
         {
-            return 0;
+            SqlCommand Comm1 = new SqlCommand(sql, MSSQLConn);
+            Comm1.CommandTimeout = 20;
+            // Comm1.ExecuteNonQuery();   //insert  update delete
+            object RetrnValue= Comm1.ExecuteScalar();
+            return RetrnValue;
+        }
+
+        public SqlDataReader ReadSigleRow(string sql)
+        {
+            SqlCommand comm = new SqlCommand(sql, MSSQLConn);
+            comm.CommandTimeout = 20;
+            SqlDataReader data;
+            data = comm.ExecuteReader();
+            return data;
+        }
+
+        public  int DoExe(string sql)
+        {
+            SqlCommand Comm = new SqlCommand(sql, MSSQLConn);
+            Comm.CommandTimeout = 20;
+
+            int SQLMessage = Comm.ExecuteNonQuery();
+            return SQLMessage;
         }
 
         public void CloseConn()
         {
             MSSQLConn.Close();
-            MSSQLConn = null;
         }
     }
 }
