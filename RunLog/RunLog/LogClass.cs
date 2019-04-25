@@ -42,5 +42,18 @@ namespace RunLog
                 sw.Close();
                 fs.Close();
         }
+
+        public void EditLog(string LogLine, string savesrc)
+        {
+            string ProPath = System.Environment.CurrentDirectory;
+            string savepath = Path.GetFullPath(savesrc);
+            FileStream fs = new FileStream(savepath + "\\Log_" + DateTime.Now.ToLongDateString().ToString() + ".txt", FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.BaseStream.Seek(0, SeekOrigin.End);
+            sw.WriteLine(DateTime.Now.ToString() +" ："+ LogLine + "\n");
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
     }
 }
