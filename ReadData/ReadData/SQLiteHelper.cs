@@ -18,8 +18,9 @@ namespace ReadData
         public  string SQLitePWD = ";Password=Hc@3232327";
 
         //初始化本地数据库
-        public  void InitialSQLiteDB()
+        public  void InitialSQLiteDB(string path=null)
         {
+            SQLitePath = "Data Source=" + path + "database.s3db";
             try
             {
                 SQLiteConn = new SQLiteConnection(SQLitePath + SQLitePWD);
@@ -79,6 +80,7 @@ namespace ReadData
             string RT= SQLiteComm.ExecuteNonQuery().ToString();
             return RT;
         }
+
 
         //本地用户验证
         public string UserLoginCheck(string UserName, string UserPWD)
